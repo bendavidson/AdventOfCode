@@ -8,8 +8,8 @@ namespace AdventOfCode2023
 {
     internal class Day02 : IPuzzle
     {
-        string inputFile = "../../../Inputs/Day2.txt";
-        string outputFile = "../../../Outputs/Day2.csv";
+        string inputFile = "../../../Inputs/Day02.txt";
+        string outputFile = "../../../Outputs/Day02.csv";
         int maxRed = 12;
         int maxGreen = 13;
         int maxBlue = 14;
