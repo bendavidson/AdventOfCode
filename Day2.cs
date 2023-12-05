@@ -61,7 +61,8 @@ namespace AdventOfCode2023
                             maxCubes = maxBlue;
                             minBlue = noOfCubes > minBlue ? noOfCubes : minBlue;
                             break;
-                        default: maxCubes = 0; break;
+                        default: maxCubes = 0;
+                            break;
                     }
 
                     if(noOfCubes > maxCubes)
