@@ -14,13 +14,13 @@ namespace AdventOfCode2023
             switch (dayNo)
             {
                 case "1":
-                    puzzle = new Day1();
+                    puzzle = new Day01();
                     break;
                 case "2":
-                    puzzle = new Day2();
+                    puzzle = new Day02();
                     break;
                 default:
-                    Console.WriteLine("No puzzle solution has been created for day" + dayNo);
+                    Console.WriteLine("No puzzle solution has been created for day " + dayNo);
                     break;
             }
         }

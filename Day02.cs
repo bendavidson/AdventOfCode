@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace AdventOfCode2023
 {
-    internal class Day2 : IPuzzle
+    internal class Day02 : IPuzzle
     {
         string inputFile = "../../../Inputs/Day2.txt";
         string outputFile = "../../../Outputs/Day2.csv";
@@ -14,7 +14,7 @@ namespace AdventOfCode2023
         int maxGreen = 13;
         int maxBlue = 14;
 
-        public Day2() 
+        public Day02() 
         {
             StreamReader sr = new StreamReader(inputFile);
             string line = sr.ReadLine();

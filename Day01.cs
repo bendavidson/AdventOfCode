@@ -8,14 +8,14 @@ using System.Threading.Tasks;
 
 namespace AdventOfCode2023
 {
-    internal class Day1 : IPuzzle
+    internal class Day01 : IPuzzle
     {
         string inputFile = "../../../Inputs/Day1.txt";
         string outputFile = "../../../Outputs/Day1.csv";
         Dictionary<string, int> numberStrings;
         Dictionary<string, int> numberStringsReverse;
 
-        public Day1()
+        public Day01()
         {
 
             numberStrings = new Dictionary<string, int>();
