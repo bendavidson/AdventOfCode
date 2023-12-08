@@ -34,6 +34,9 @@ namespace AdventOfCode2023
                 case "7":
                     puzzle = new Day07();
                     break;
+                case "8":
+                    puzzle = new Day08();
+                    break;
                 default:
                     Console.WriteLine("No puzzle solution has been created for day " + dayNo);
                     break;
