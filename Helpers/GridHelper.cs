@@ -1,4 +1,4 @@
-﻿using AdventOfCode2023.DijkstraCalculator;
+﻿using AdventOfCode2023.Algorithms.DijkstraCalculator;
 using AdventOfCode2023.Enums;
 using System;
 using System.Collections.Generic;
@@ -48,7 +48,7 @@ namespace AdventOfCode2023.Helpers
             if (!direction.HasValue)
                 return null;
 
-            switch(direction)
+            switch (direction)
             {
                 case Direction.Left: return "<";
                 case Direction.Right: return ">";
@@ -57,5 +57,40 @@ namespace AdventOfCode2023.Helpers
                 default: return ".";
             }
         }
+
+        public Direction DirectionFromChar(char ch)
+        {
+            if (ch >= 'A' && ch <= 'Z')
+            {
+                var lookupTable = Enum.GetValues(typeof(Direction)).Cast<Direction>().Where(x => x != Direction.Default).ToDictionary(x => x.ToString()[0], x => x);
+
+                if (!lookupTable.ContainsKey(ch))
+                    return Direction.Default;
+
+                return lookupTable[ch];
+            }
+
+            return default;
+        }
+
+        public Tuple<long, long> Transpose (Tuple<long, long> source, Direction direction, long moves)
+        {
+            long x = source.Item1;
+            long y = source.Item2;
+
+            if(direction == Direction.Up || direction == Direction.Down)
+            {
+                x = x + (moves * (direction == Direction.Up ? -1 : 1));
+            }
+
+            if(direction == Direction.Left || direction == Direction.Right)
+            {
+                y = y + (moves * (direction == Direction.Left ? -1 : 1));
+            }
+
+            return Tuple.Create(x, y);
+
+        }
+
     }
 }

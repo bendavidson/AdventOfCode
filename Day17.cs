@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using AdventOfCode2023.DijkstraCalculator;
+using AdventOfCode2023.Algorithms.DijkstraCalculator;
 using AdventOfCode2023.Enums;
 using AdventOfCode2023.Helpers;
 

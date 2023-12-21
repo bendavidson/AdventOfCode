@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using AdventOfCode2023.Enums;
 
-namespace AdventOfCode2023.DijkstraCalculator
+namespace AdventOfCode2023.Algorithms.DijkstraCalculator
 {
     internal class NeighbourAttributes
     {

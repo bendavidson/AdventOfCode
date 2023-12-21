@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using AdventOfCode2023.Enums;
 using AdventOfCode2023.Helpers;
 
-namespace AdventOfCode2023.DijkstraCalculator
+namespace AdventOfCode2023.Algorithms.DijkstraCalculator
 {
     internal class DistanceCalculator
     {
@@ -18,7 +18,7 @@ namespace AdventOfCode2023.DijkstraCalculator
         private List<Node> _allNodes;
         private List<Tuple<Node, Direction>> _routeSteps;
         private PriorityQueue<Tuple<Node, Direction, int>, int> _nodesToProcess;
-        private Dictionary<Tuple<Node,Direction, int>, int> _visitedNodes;
+        private Dictionary<Tuple<Node, Direction, int>, int> _visitedNodes;
 
         public int RouteDistance { get; private set; }
         public List<Tuple<Node, Direction>> RouteSteps { get { return _routeSteps; } }
@@ -33,12 +33,12 @@ namespace AdventOfCode2023.DijkstraCalculator
 
         public void Calculate(Node source, Node destination, int maxStraight = int.MaxValue, int minStraight = 0)
         {
-            _nodesToProcess.Enqueue(new Tuple<Node, Direction, int>(source, Direction.Default, 0),0);
+            _nodesToProcess.Enqueue(new Tuple<Node, Direction, int>(source, Direction.Default, 0), 0);
 
             Tuple<Node, Direction, int> nodeToProcess = null;
             int cost = 0;
-            
-            while(_nodesToProcess.TryDequeue(out nodeToProcess, out cost))
+
+            while (_nodesToProcess.TryDequeue(out nodeToProcess, out cost))
             {
                 if (nodeToProcess.Item1 == destination)
                     break;
@@ -51,26 +51,26 @@ namespace AdventOfCode2023.DijkstraCalculator
             SetRouteSteps(nodeToProcess, source);
         }
 
-        private void ProcessNode(Tuple<Node,Direction, int> nodeToProcess, int cost, int maxStraight, int minStraight)
+        private void ProcessNode(Tuple<Node, Direction, int> nodeToProcess, int cost, int maxStraight, int minStraight)
         {
-            foreach(var neighbour in nodeToProcess.Item1.Neighbours)
+            foreach (var neighbour in nodeToProcess.Item1.Neighbours)
             {
                 if (
                     neighbour.Value.Direction == _gridHelper.Opposite(nodeToProcess.Item2)
-                    ||(neighbour.Value.Direction == nodeToProcess.Item2 && nodeToProcess.Item3 == maxStraight)
-                    ||(neighbour.Value.Direction != nodeToProcess.Item2 && nodeToProcess.Item3 < minStraight && nodeToProcess.Item2 != Direction.Default)
+                    || neighbour.Value.Direction == nodeToProcess.Item2 && nodeToProcess.Item3 == maxStraight
+                    || neighbour.Value.Direction != nodeToProcess.Item2 && nodeToProcess.Item3 < minStraight && nodeToProcess.Item2 != Direction.Default
                     )
                     continue;
                 else
                 {
                     var nodeToAdd = new Tuple<Node, Direction, int>
                     (
-                        neighbour.Key, 
-                        neighbour.Value.Direction, 
-                        (neighbour.Value.Direction == nodeToProcess.Item2 ? nodeToProcess.Item3 + 1 : 1)
+                        neighbour.Key,
+                        neighbour.Value.Direction,
+                        neighbour.Value.Direction == nodeToProcess.Item2 ? nodeToProcess.Item3 + 1 : 1
                     );
 
-                    if(!_visitedNodes.ContainsKey(nodeToAdd))
+                    if (!_visitedNodes.ContainsKey(nodeToAdd))
                     {
                         int vistCost = cost + neighbour.Value.Cost;
                         _nodesToProcess.Enqueue(nodeToAdd, vistCost);
@@ -87,7 +87,7 @@ namespace AdventOfCode2023.DijkstraCalculator
 
             var nodeVisit = _visitedNodes[node];
 
-            _routeSteps.Add(new Tuple<Node,Direction>(node.Item1, node.Item2));
+            _routeSteps.Add(new Tuple<Node, Direction>(node.Item1, node.Item2));
 
             var previousNode = node.Item1.Neighbours.FirstOrDefault(n => n.Value.Direction == _gridHelper.Opposite(node.Item2));
 
@@ -97,18 +97,18 @@ namespace AdventOfCode2023.DijkstraCalculator
             var previousNodeVisit = _visitedNodes.Where(
                 v => v.Key.Item1 == previousNode.Key
                 && v.Key.Item2 != _gridHelper.Opposite(node.Item2)
-                && ((v.Key.Item3 == node.Item3 - 1 && v.Key.Item2 == node.Item2)
+                && (v.Key.Item3 == node.Item3 - 1 && v.Key.Item2 == node.Item2
                     || v.Key.Item2 != node.Item2)).ToList().OrderBy(v => v.Value).FirstOrDefault();
 
             if (previousNodeVisit.Key != null)
-                SetRouteSteps(previousNodeVisit.Key,source);
+                SetRouteSteps(previousNodeVisit.Key, source);
         }
 
-        private Dictionary<Node,Tuple<Node,Direction>> SetRoutes()
+        private Dictionary<Node, Tuple<Node, Direction>> SetRoutes()
         {
             var routes = new Dictionary<Node, Tuple<Node, Direction>>();
-            
-            foreach(var node in _allNodes)
+
+            foreach (var node in _allNodes)
             {
                 routes.Add(node, null);
             }

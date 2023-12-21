@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AdventOfCode2023.DijkstraCalculator
+namespace AdventOfCode2023.Algorithms.DijkstraCalculator
 {
     internal class Graph
     {
@@ -12,14 +12,14 @@ namespace AdventOfCode2023.DijkstraCalculator
         public int NodeCount { get { return _nodes.Count; } }
         public List<Node> Nodes { get { return _nodes; } }
 
-        public Graph() 
-        { 
+        public Graph()
+        {
             _nodes = new List<Node>();
         }
 
         public void Add(Node n)
-        { 
-            _nodes.Add(n); 
+        {
+            _nodes.Add(n);
         }
 
         public void Remove(Node n)
