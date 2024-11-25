@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AdventOfCode2023
+namespace AdventOfCode._2023
 {
     internal class Day14 : DayBase
     {
@@ -38,13 +38,13 @@ namespace AdventOfCode2023
             {
                 foreach (var column in columns)
                 {
-                    Console.WriteLine(new String(column));
+                    Console.WriteLine(new string(column));
 
                     var tiltedColumn = TiltColumn(column);
 
-                    total += tiltedColumn.Select((x, i) => new { index = i, x }).Where(r => r.x == 'O').Sum(r => r.index+1);
+                    total += tiltedColumn.Select((x, i) => new { index = i, x }).Where(r => r.x == 'O').Sum(r => r.index + 1);
 
-                    Console.WriteLine(new String(tiltedColumn));
+                    Console.WriteLine(new string(tiltedColumn));
                 }
             }
             else
@@ -55,9 +55,9 @@ namespace AdventOfCode2023
                 foreach (var column in columns)
                 {
                     tiltedColumns.Add(TiltColumn(column));
-                }               
+                }
 
-                for(int i = 1; i < 4; i++)
+                for (int i = 1; i < 4; i++)
                 {
                     rotatedColumns = RotateColumns(tiltedColumns);
                     tiltedColumns = new List<char[]>();
@@ -74,9 +74,9 @@ namespace AdventOfCode2023
                 var cyclesDone = new List<List<string>>();
                 int cycles = 1;
 
-                while (!cyclesDone.Any(c => c.SequenceEqual(rotatedColumns.Select(r => new String(r)).ToList())))
+                while (!cyclesDone.Any(c => c.SequenceEqual(rotatedColumns.Select(r => new string(r)).ToList())))
                 {
-                    var cycleStrings = rotatedColumns.Select(c => new String(c)).ToList();
+                    var cycleStrings = rotatedColumns.Select(c => new string(c)).ToList();
                     cyclesDone.Add(cycleStrings);
 
                     for (int i = 1; i <= 4; i++)
@@ -94,9 +94,9 @@ namespace AdventOfCode2023
                     cycles++;
                 }
 
-                var matchingCycle = cyclesDone.IndexOf(cyclesDone.FirstOrDefault(c => c.SequenceEqual(rotatedColumns.Select(r => new String(r)).ToList())));
+                var matchingCycle = cyclesDone.IndexOf(cyclesDone.FirstOrDefault(c => c.SequenceEqual(rotatedColumns.Select(r => new string(r)).ToList())));
 
-                var endCycle = ((1000000000 - matchingCycle)%(cyclesDone.Count() - matchingCycle))+matchingCycle-1;
+                var endCycle = (1000000000 - matchingCycle) % (cyclesDone.Count() - matchingCycle) + matchingCycle - 1;
 
                 var cycleToSum = cyclesDone[endCycle].Select(c => c.ToCharArray()).ToList();
 
@@ -118,31 +118,31 @@ namespace AdventOfCode2023
         private char[] TiltColumn(char[] column)
         {
             column = column.Reverse().ToArray();
-            var tiltedColumn = Enumerable.Repeat('.',column.Length).ToArray();
+            var tiltedColumn = Enumerable.Repeat('.', column.Length).ToArray();
 
             var columnHeight = column.Length;
 
             if (_tiltedColumns.Contains(column))
                 return (char[])_tiltedColumns[column];
-            
+
             var rocks = column.Select((x, i) => new { index = i, x }).Where(r => r.x == 'O').ToList();
             var cubes = column.Select((x, i) => new { index = i, x }).Where(r => r.x == '#').ToList();
 
-            foreach( var c in cubes )
+            foreach (var c in cubes)
             {
                 tiltedColumn[c.index] = c.x;
             }
-            
+
             foreach (var rock in rocks)
             {
                 var nextCube = Array.FindLastIndex(column, rock.index, x => x == '#');
 
                 var rocksBetween = rocks.Where(r => r.index > nextCube && r.index < rock.index).Count();
 
-                tiltedColumn[rock.index - ((rock.index - (nextCube + 1))) + rocksBetween] = rock.x;
+                tiltedColumn[rock.index - (rock.index - (nextCube + 1)) + rocksBetween] = rock.x;
             }
 
-            _tiltedColumns.Add(column,tiltedColumn);
+            _tiltedColumns.Add(column, tiltedColumn);
 
             return tiltedColumn.Reverse().ToArray();
         }
@@ -151,7 +151,7 @@ namespace AdventOfCode2023
         {
             var rotatedColumns = new List<char[]>();
 
-            foreach( var column in columns )
+            foreach (var column in columns)
             {
                 for (int i = 0; i < column.Length; i++)
                 {

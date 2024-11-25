@@ -1,4 +1,4 @@
-﻿using AdventOfCode2023.Helpers;
+﻿using AdventOfCode.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,7 +8,7 @@ using System.Text.Json.Serialization;
 using System.Text.Unicode;
 using System.Threading.Tasks;
 
-namespace AdventOfCode2023
+namespace AdventOfCode._2023
 {
     internal class Day19 : DayBase
     {
@@ -17,7 +17,7 @@ namespace AdventOfCode2023
         protected override void Solve()
         {
             int x = 0;
-            
+
             List<Part> parts = new List<Part>();
             Dictionary<string, Tuple<List<Rule>, List<Part>>> workflows = new Dictionary<string, Tuple<List<Rule>, List<Part>>>();
 
@@ -25,35 +25,35 @@ namespace AdventOfCode2023
 
             foreach (var line in lines)
             {
-                if(line.Length == 0)
+                if (line.Length == 0)
                     continue;
-                else if(line.StartsWith('{'))
+                else if (line.StartsWith('{'))
                 {
-                    var part = new Part(x,line);
+                    var part = new Part(x, line);
                     parts.Add(part);
                     x++;
                 }
                 else
                 {
                     var lineSplit = line.Split(new char[] { '{', '}' }, StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
-                    
+
                     List<Rule> rules = new List<Rule>();
 
                     var ruleSplit = lineSplit[1].Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
 
-                    foreach(var rule in ruleSplit)
+                    foreach (var rule in ruleSplit)
                     {
                         var ruleComponents = rule.Split(new char[] { '<', '>', ':' }, StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
                         rules.Add(new Rule
                         {
                             EqualityAttribute = ruleComponents.Length == 1 ? 'x' : ruleComponents[0][0],
-                            EqualityComparer = (ruleComponents.Length == 1 || rule.Contains('>')) ? new GreaterThan() : new LessThan(),
+                            EqualityComparer = ruleComponents.Length == 1 || rule.Contains('>') ? new GreaterThan() : new LessThan(),
                             EqualityValue = ruleComponents.Length == 1 ? 0 : Convert.ToInt32(ruleComponents[1]),
                             Result = ruleComponents.Length == 1 ? ruleComponents[0] : ruleComponents[2]
                         });
                     }
 
-                    workflows.Add(lineSplit[0],Tuple.Create(rules,new List<Part>()));
+                    workflows.Add(lineSplit[0], Tuple.Create(rules, new List<Part>()));
                 }
             }
 
@@ -111,9 +111,9 @@ namespace AdventOfCode2023
 
                 List<Dictionary<char, Tuple<int, int>>> rangeCombinations = new List<Dictionary<char, Tuple<int, int>>>();
 
-                foreach(var workflow in acceptedWorkflows)
+                foreach (var workflow in acceptedWorkflows)
                 {
-                    Dictionary<char,Tuple<int,int>> ranges = new Dictionary<char,Tuple<int,int>>();
+                    Dictionary<char, Tuple<int, int>> ranges = new Dictionary<char, Tuple<int, int>>();
                     ranges.Add('x', Tuple.Create(1, 4000));
                     ranges.Add('m', Tuple.Create(1, 4000));
                     ranges.Add('a', Tuple.Create(1, 4000));
@@ -142,8 +142,8 @@ namespace AdventOfCode2023
 
                                 var currentRange = ranges[currentRule.EqualityAttribute];
 
-                                if ((currentRule.EqualityComparer.GetType() == (typeof(GreaterThan)) && currentRule == entryRule)
-                                    || (currentRule.EqualityComparer.GetType() == (typeof(LessThan)) && currentRule != entryRule))
+                                if (currentRule.EqualityComparer.GetType() == typeof(GreaterThan) && currentRule == entryRule
+                                    || currentRule.EqualityComparer.GetType() == typeof(LessThan) && currentRule != entryRule)
                                 {
                                     ranges[currentRule.EqualityAttribute] = Tuple.Create(Math.Max(currentRange.Item1, currentRule.EqualityValue + (currentRule == entryRule ? 1 : 0)), currentRange.Item2);
                                 }
@@ -162,18 +162,18 @@ namespace AdventOfCode2023
                             currentWorkflow = workflows.FirstOrDefault(w => w.Value.Item1.Any(r => r.Result == currentEntryPoint));
                         }
 
-                        rangeCombinations.Add(ranges);                        
+                        rangeCombinations.Add(ranges);
                     }
                 }
 
                 var distanceCombinations = rangeCombinations.Distinct().ToList();
 
-                foreach(var rangeCombination in distanceCombinations)
+                foreach (var rangeCombination in distanceCombinations)
                 {
-                    long branchCombinations = ((long)rangeCombination['x'].Item2 - (long)rangeCombination['x'].Item1 + (long)1)
-                                                    * ((long)rangeCombination['m'].Item2 - (long)rangeCombination['m'].Item1 + (long)1)
-                                                    * ((long)rangeCombination['a'].Item2 - (long)rangeCombination['a'].Item1 + (long)1)
-                                                    * ((long)rangeCombination['s'].Item2 - (long)rangeCombination['s'].Item1 + (long)1);
+                    long branchCombinations = (rangeCombination['x'].Item2 - (long)rangeCombination['x'].Item1 + 1)
+                                                    * (rangeCombination['m'].Item2 - (long)rangeCombination['m'].Item1 + 1)
+                                                    * (rangeCombination['a'].Item2 - (long)rangeCombination['a'].Item1 + 1)
+                                                    * (rangeCombination['s'].Item2 - (long)rangeCombination['s'].Item1 + 1);
 
                     total += branchCombinations;
                 }
@@ -191,14 +191,14 @@ namespace AdventOfCode2023
         class Part
         {
             public int Id { get; set; }
-            public Dictionary<char,int> Attributes { get; set; }
+            public Dictionary<char, int> Attributes { get; set; }
 
             public Part(int id, string attributeString)
             {
                 Id = id;
-                Attributes = new Dictionary<char,int>();
+                Attributes = new Dictionary<char, int>();
 
-                foreach(var attribute in attributeString.Split(new char[] { ',', '{', '}' },StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries))
+                foreach (var attribute in attributeString.Split(new char[] { ',', '{', '}' }, StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries))
                 {
                     var attributeSplit = attribute.Split('=');
                     Attributes.Add(attributeSplit[0][0], Convert.ToInt32(attributeSplit[1]));

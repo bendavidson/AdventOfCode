@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AdventOfCode2023
+namespace AdventOfCode._2023
 {
     internal class Day06 : IPuzzle
     {
@@ -20,10 +20,10 @@ namespace AdventOfCode2023
             var partNo = Convert.ToInt32(Console.ReadLine());
 
             List<Race> races = new List<Race>();
-            
+
             while (line != null)
             {
-                string[] parts = line.Split((partNo == 1 ? new char[] { ':',' ' } : new char[] { ':' }), StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
+                string[] parts = line.Split(partNo == 1 ? new char[] { ':', ' ' } : new char[] { ':' }, StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
 
                 for (int i = 1; i < parts.Length; i++)
                 {
@@ -32,7 +32,7 @@ namespace AdventOfCode2023
                         Race race = new Race
                         {
                             No = i,
-                            Duration = Convert.ToInt64(partNo == 1 ? parts[i] : parts[i].Replace(" ",""))
+                            Duration = Convert.ToInt64(partNo == 1 ? parts[i] : parts[i].Replace(" ", ""))
                         };
 
                         races.Add(race);
@@ -41,7 +41,7 @@ namespace AdventOfCode2023
                     {
                         var race = races.FirstOrDefault(x => x.No == i);
                         race.Distance = Convert.ToInt64(partNo == 1 ? parts[i] : parts[i].Replace(" ", ""));
-                    }    
+                    }
                 }
 
                 line = sr.ReadLine();
@@ -49,18 +49,18 @@ namespace AdventOfCode2023
 
             sr.Close();
 
-            Int64 total = 0;
+            long total = 0;
 
-            foreach(var race in  races)
+            foreach (var race in races)
             {
                 Console.WriteLine("Race " + race.No.ToString());
 
-                for(int i = 1; i < race.Duration; i++)
+                for (int i = 1; i < race.Duration; i++)
                 {
                     var movingTime = race.Duration - i;
                     var distance = movingTime * i;
 
-                    if(distance > race.Distance)
+                    if (distance > race.Distance)
                     {
                         race.WinningWays++;
                     }
@@ -74,11 +74,10 @@ namespace AdventOfCode2023
 
         private class Race
         {
-            public Int64 No;
-            public Int64 Duration;
-            public Int64 Distance;
-            public Int64 WinningWays;
+            public long No;
+            public long Duration;
+            public long Distance;
+            public long WinningWays;
         }
     }
 }
-    

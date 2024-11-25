@@ -4,13 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AdventOfCode2023
+namespace AdventOfCode._2023
 {
     internal class Day09 : IPuzzle
     {
         string inputFile = "../../../Inputs/Day09.txt";
         string outputFile = "../../../Outputs/Day09.csv";
-        Int64 partNo = 0;
+        long partNo = 0;
 
         public Day09()
         {
@@ -20,19 +20,19 @@ namespace AdventOfCode2023
             Console.WriteLine("Are you solving Part 1 or Part 2?");
             partNo = Convert.ToInt64(Console.ReadLine());
 
-            Int64 total = 0;
+            long total = 0;
 
-            List<Int64[]> patterns = new List<Int64[]>();
+            List<long[]> patterns = new List<long[]>();
 
             while (line != null)
             {
                 var pattern = line
-                    .Split(' ',StringSplitOptions.RemoveEmptyEntries|StringSplitOptions.TrimEntries)
+                    .Split(' ', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)
                     .Select(x => Convert.ToInt64(x))
                     .ToArray();
 
                 patterns.Add(pattern);
-                
+
                 line = sr.ReadLine();
             }
 
@@ -40,14 +40,14 @@ namespace AdventOfCode2023
 
             foreach (var pattern in patterns)
             {
-                Dictionary<Int64, Int64[]> differences = new Dictionary<Int64, Int64[]>();
+                Dictionary<long, long[]> differences = new Dictionary<long, long[]>();
 
-                Int64 i = 0;
+                long i = 0;
 
-                var difference = pattern.Zip(pattern.Skip(1), (x, y) =>  y - x ).ToArray();
+                var difference = pattern.Zip(pattern.Skip(1), (x, y) => y - x).ToArray();
                 differences.Add(i, difference);
 
-                while(difference.Any(x => x != 0))
+                while (difference.Any(x => x != 0))
                 {
                     i++;
 
@@ -55,9 +55,9 @@ namespace AdventOfCode2023
                     differences.Add(i, difference);
                 }
 
-                Int64 lastDiff = 0;
-                
-                for(Int64 j = differences.Count() - 2; j >= 0; j--)
+                long lastDiff = 0;
+
+                for (long j = differences.Count() - 2; j >= 0; j--)
                 {
                     if (partNo == 1)
                         lastDiff += differences[j][differences[j].Length - 1];
@@ -66,11 +66,11 @@ namespace AdventOfCode2023
                 }
 
                 if (partNo == 1)
-                    total += (pattern[pattern.Length - 1] + lastDiff);
+                    total += pattern[pattern.Length - 1] + lastDiff;
                 else
-                    total += (pattern[0] - lastDiff);
+                    total += pattern[0] - lastDiff;
 
-                string outLine = String.Join(',', pattern) + "," 
+                string outLine = string.Join(',', pattern) + ","
                     + (partNo == 1 ? (pattern[pattern.Length - 1] + lastDiff).ToString() : (pattern[0] - lastDiff).ToString())
                     + Environment.NewLine;
                 File.AppendAllText(outputFile, outLine);

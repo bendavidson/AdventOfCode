@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AdventOfCode2023.Helpers
+namespace AdventOfCode.Helpers
 {
     internal class GreaterThan : IEqualityComparer<int>
     {

@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AdventOfCode2023
+namespace AdventOfCode._2023
 {
     internal class Day15 : DayBase
     {
@@ -17,21 +17,21 @@ namespace AdventOfCode2023
 
             foreach (var line in lines)
             {
-                 steps = line.Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
+                steps = line.Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
             }
 
             var boxes = new List<Tuple<string, int>>[256];
-            
-            foreach(var step in steps)
+
+            foreach (var step in steps)
             {
                 var code = HashCode(step);
 
-                if(partNo == 1)
+                if (partNo == 1)
                     total += code;
                 else
                 {
                     var box = boxes[code];
-                    if(box == null)
+                    if (box == null)
                         box = new List<Tuple<string, int>>();
                     var operation = step.FirstOrDefault(x => x == '=' || x == '-');
                     var lensLabel = step.Substring(0, Array.IndexOf(step.ToCharArray(), operation));
@@ -39,10 +39,10 @@ namespace AdventOfCode2023
                     if (operation == '-')
                     {
                         var lens = box.FirstOrDefault(x => x.Item1 == lensLabel);
-                        if(lens != null)
+                        if (lens != null)
                         {
                             box.Remove(lens);
-                        }    
+                        }
                     }
                     else
                     {
@@ -63,11 +63,11 @@ namespace AdventOfCode2023
                 }
             }
 
-            foreach (var box in boxes.Select((b,i) => new { b, boxNo = i+1 }).Where(x => x.b != null))
+            foreach (var box in boxes.Select((b, i) => new { b, boxNo = i + 1 }).Where(x => x.b != null))
             {
-                foreach(var lens in box.b.Select((l,i) => new { lensSlot = i+1, focalLength = l.Item2 }))
+                foreach (var lens in box.b.Select((l, i) => new { lensSlot = i + 1, focalLength = l.Item2 }))
                 {
-                    total += (box.boxNo * lens.lensSlot * lens.focalLength);
+                    total += box.boxNo * lens.lensSlot * lens.focalLength;
                 }
             }
         }

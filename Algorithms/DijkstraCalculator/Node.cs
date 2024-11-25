@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using AdventOfCode2023.Enums;
+using AdventOfCode.Enums;
 
-namespace AdventOfCode2023.Algorithms.DijkstraCalculator
+namespace AdventOfCode.Algorithms.DijkstraCalculator
 {
     internal class Node
     {

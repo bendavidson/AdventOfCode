@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AdventOfCode2023
+namespace AdventOfCode._2023
 {
     internal class Day05 : IPuzzle
     {
@@ -26,23 +26,23 @@ namespace AdventOfCode2023
             var partNo = Convert.ToInt32(Console.ReadLine());
 
             while (line != null)
-            { 
+            {
                 if (line.Length > 0)
                 {
                     if (line.StartsWith("seeds:"))
                     {
                         var lineItems = line.Split(' ', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
 
-                        for (i = 1; i < lineItems.Length; i +=partNo)
+                        for (i = 1; i < lineItems.Length; i += partNo)
                         {
                             items.Add(new Item { Type = ItemType.Seed, Number = Convert.ToInt64(lineItems[i]), RangeLength = partNo == 2 ? Convert.ToInt64(lineItems[i + 1]) : 1 });
                         }
                     }
-                    else if(line.EndsWith("map:"))
+                    else if (line.EndsWith("map:"))
                     {
                         var mapStrings = line.Split(new char[] { '-', ' ' }, StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
                         ItemType sourceType, destinationType;
-                        if (Enum.TryParse<ItemType>(mapStrings[0],true, out sourceType) && Enum.TryParse<ItemType>(mapStrings[2],true, out destinationType))
+                        if (Enum.TryParse(mapStrings[0], true, out sourceType) && Enum.TryParse(mapStrings[2], true, out destinationType))
                         {
                             currentMap = new Tuple<ItemType, ItemType>(sourceType, destinationType);
                         }
@@ -51,7 +51,7 @@ namespace AdventOfCode2023
                             Console.WriteLine("Unknown map type");
                         }
                     }
-                    else if(currentMap != null)
+                    else if (currentMap != null)
                     {
                         var mapDetails = line.Split(' ', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
 
@@ -72,7 +72,7 @@ namespace AdventOfCode2023
 
             sr.Close();
 
-            Int64 total = 0;
+            long total = 0;
 
             if (partNo == 1)
             {
@@ -103,7 +103,7 @@ namespace AdventOfCode2023
             }
             else
             {
-                foreach(var item in items.Where(x => x.Type == ItemType.Seed))
+                foreach (var item in items.Where(x => x.Type == ItemType.Seed))
                 {
                     List<Item> seedItems = new List<Item>();
                     seedItems.Add(item);
@@ -112,11 +112,11 @@ namespace AdventOfCode2023
                     {
                         var itemsToProcess = seedItems.Where(x => x.Type == itemType).ToList();
 
-                        foreach(var procItem in itemsToProcess)
+                        foreach (var procItem in itemsToProcess)
                         {
                             var maps = itemMaps.Where(x => x.SourceType == procItem.Type && x.SourceEndNumber >= procItem.Number && x.SourceStartNumber <= procItem.NumberEnd).ToList();
 
-                            if(!maps.Any())
+                            if (!maps.Any())
                             {
                                 maps.Add(
                                     new ItemMap
@@ -128,17 +128,17 @@ namespace AdventOfCode2023
                                         RangeLength = procItem.RangeLength
                                     });
                             }
-                            
+
 
                             Item seedItem = null;
                             foreach (var map in maps.OrderBy(x => x.SourceStartNumber))
                             {
-                                if(map.SourceStartNumber > (seedItem == null ? procItem.Number : seedItem.ChildNumber + 1))
+                                if (map.SourceStartNumber > (seedItem == null ? procItem.Number : seedItem.ChildNumber + 1))
                                 {
                                     seedItem = new Item
                                     {
                                         Type = map.DestinationType,
-                                        Number = (seedItem == null ? procItem.Number : seedItem.ChildNumber + 1),
+                                        Number = seedItem == null ? procItem.Number : seedItem.ChildNumber + 1,
                                         RangeLength = map.SourceStartNumber - (seedItem == null ? procItem.Number : seedItem.ChildNumber + 1),
                                         ChildNumber = map.SourceStartNumber - 1
                                     };
@@ -149,14 +149,14 @@ namespace AdventOfCode2023
                                 {
                                     Type = map.DestinationType,
                                     Number = Math.Max(procItem.Number, map.SourceStartNumber) + map.Translation,
-                                    RangeLength = (Math.Min(procItem.NumberEnd, map.SourceEndNumber) + map.Translation) - (Math.Max(procItem.Number, map.SourceStartNumber) + map.Translation) + 1,
+                                    RangeLength = Math.Min(procItem.NumberEnd, map.SourceEndNumber) + map.Translation - (Math.Max(procItem.Number, map.SourceStartNumber) + map.Translation) + 1,
                                     ChildNumber = Math.Min(procItem.NumberEnd, map.SourceEndNumber)
                                 };
 
                                 seedItems.Add(seedItem);
                             }
 
-                            if(seedItem.ChildNumber < procItem.NumberEnd)
+                            if (seedItem.ChildNumber < procItem.NumberEnd)
                             {
                                 seedItem = new Item
                                 {
@@ -184,22 +184,22 @@ namespace AdventOfCode2023
         private class Item
         {
             public ItemType Type;
-            public Int64 Number;
-            public Int64 RangeLength;
-            public Int64 ChildNumber;
-            public Int64 NumberEnd { get { return Number + RangeLength - 1; } }
+            public long Number;
+            public long RangeLength;
+            public long ChildNumber;
+            public long NumberEnd { get { return Number + RangeLength - 1; } }
         }
 
         private class ItemMap
         {
             public ItemType SourceType;
             public ItemType DestinationType;
-            public Int64 SourceStartNumber;
-            public Int64 DestinationStartNumber;
-            public Int64 RangeLength;
-            public Int64 SourceEndNumber { get { return SourceStartNumber + RangeLength -1; } }
-            public Int64 DestinationEndNumber { get { return DestinationStartNumber + RangeLength -1; } }
-            public Int64 Translation { get { return DestinationStartNumber - SourceStartNumber; } }
+            public long SourceStartNumber;
+            public long DestinationStartNumber;
+            public long RangeLength;
+            public long SourceEndNumber { get { return SourceStartNumber + RangeLength - 1; } }
+            public long DestinationEndNumber { get { return DestinationStartNumber + RangeLength - 1; } }
+            public long Translation { get { return DestinationStartNumber - SourceStartNumber; } }
         }
 
         private enum ItemType

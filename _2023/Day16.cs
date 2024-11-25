@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AdventOfCode2023
+namespace AdventOfCode._2023
 {
     internal class Day16 : DayBase
     {
@@ -16,10 +16,10 @@ namespace AdventOfCode2023
             List<Tile> tiles = new List<Tile>();
 
             int x = 0;
-            
-            foreach(var line in lines)
+
+            foreach (var line in lines)
             {
-                for(int y = 0; y < line.Length; y++)
+                for (int y = 0; y < line.Length; y++)
                 {
                     Tile tile = new Tile
                     {
@@ -31,29 +31,29 @@ namespace AdventOfCode2023
                 x++;
             }
 
-            _lastTile = new Tuple<int, int>(lines.Count()-1, lines[0].Length-1);
+            _lastTile = new Tuple<int, int>(lines.Count() - 1, lines[0].Length - 1);
 
-            if(partNo == 1)
+            if (partNo == 1)
             {
-                total = CountEnergisedTiles(tiles[0], tiles,Direction.Right);
+                total = CountEnergisedTiles(tiles[0], tiles, Direction.Right);
             }
             else
             {
-                for(x = 0; x < _lastTile.Item1; x++)
+                for (x = 0; x < _lastTile.Item1; x++)
                 {
                     tiles = tiles.ConvertAll(x => new Tile { Position = x.Position, TileType = x.TileType });
-                    total = Math.Max(total, CountEnergisedTiles(tiles.FirstOrDefault(t => t.Position.Equals(new Tuple<int, int>(x,0))), tiles,Direction.Right));
+                    total = Math.Max(total, CountEnergisedTiles(tiles.FirstOrDefault(t => t.Position.Equals(new Tuple<int, int>(x, 0))), tiles, Direction.Right));
 
-                    tiles = tiles.ConvertAll(x => new Tile { Position = x.Position, TileType = x.TileType }); 
+                    tiles = tiles.ConvertAll(x => new Tile { Position = x.Position, TileType = x.TileType });
                     total = Math.Max(total, CountEnergisedTiles(tiles.FirstOrDefault(t => t.Position.Equals(new Tuple<int, int>(x, _lastTile.Item2))), tiles, Direction.Left));
                 }
 
-                for(int y = 0; y < _lastTile.Item2; y++)
+                for (int y = 0; y < _lastTile.Item2; y++)
                 {
-                    tiles = tiles.ConvertAll(x => new Tile { Position = x.Position, TileType = x.TileType }); 
+                    tiles = tiles.ConvertAll(x => new Tile { Position = x.Position, TileType = x.TileType });
                     total = Math.Max(total, CountEnergisedTiles(tiles.FirstOrDefault(t => t.Position.Equals(new Tuple<int, int>(0, y))), tiles, Direction.Down));
 
-                    tiles = tiles.ConvertAll(x => new Tile { Position = x.Position, TileType = x.TileType }); 
+                    tiles = tiles.ConvertAll(x => new Tile { Position = x.Position, TileType = x.TileType });
                     total = Math.Max(total, CountEnergisedTiles(tiles.FirstOrDefault(t => t.Position.Equals(new Tuple<int, int>(_lastTile.Item1, y))), tiles, Direction.Up));
                 }
             }
@@ -87,9 +87,9 @@ namespace AdventOfCode2023
             return tiles.Where(x => x.Connections != null).Count();
         }
 
-        private List<Tuple<int,int,Direction>> GetTileConnections(Tile tile, Direction direction)
+        private List<Tuple<int, int, Direction>> GetTileConnections(Tile tile, Direction direction)
         {
-            List<Tuple<int,int,Direction>> result = new List<Tuple<int,int,Direction>>();
+            List<Tuple<int, int, Direction>> result = new List<Tuple<int, int, Direction>>();
 
             switch (tile.TileType)
             {
@@ -141,7 +141,7 @@ namespace AdventOfCode2023
                             result = new List<Tuple<int, int, Direction>> { GetConnection(tile.Position, Direction.Right) }; break;
                         case Direction.Up:
                         case Direction.Down:
-                            result = new List<Tuple<int, int, Direction>> { GetConnection(tile.Position, Direction.Left), GetConnection(tile.Position, Direction.Right) }; 
+                            result = new List<Tuple<int, int, Direction>> { GetConnection(tile.Position, Direction.Left), GetConnection(tile.Position, Direction.Right) };
                             break;
                     }
                     break;
@@ -160,7 +160,7 @@ namespace AdventOfCode2023
                     break;
             }
 
-            if(result.Count() > 0)
+            if (result.Count() > 0)
             {
                 if (tile.Connections == null)
                     tile.Connections = result.Select(x => new Tuple<int, int>(x.Item1, x.Item2)).ToList();
@@ -178,7 +178,7 @@ namespace AdventOfCode2023
             return result;
         }
 
-        private Tuple<int,int, Direction> GetConnection(Tuple<int,int> position, Direction direction)
+        private Tuple<int, int, Direction> GetConnection(Tuple<int, int> position, Direction direction)
         {
             switch (direction)
             {
@@ -191,7 +191,7 @@ namespace AdventOfCode2023
                 case Direction.Down:
                     return new Tuple<int, int, Direction>(position.Item1 + 1, position.Item2, direction);
                 default:
-                    return new Tuple<int,int,Direction>(position.Item1,position.Item2,direction);
+                    return new Tuple<int, int, Direction>(position.Item1, position.Item2, direction);
             }
         }
 

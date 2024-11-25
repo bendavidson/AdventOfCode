@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AdventOfCode2023
+namespace AdventOfCode._2023
 {
     internal class Day04 : IPuzzle
     {
@@ -32,9 +32,10 @@ namespace AdventOfCode2023
                 var winningNumbers = numberLists[0].Split(' ', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
                 var myNumbers = numberLists[1].Split(' ', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
 
-                cards.Add(new Card { 
-                    CardNumber=cardNo,
-                    WinningNumbers = winningNumbers.Select(x => Convert.ToInt32(x)).ToList(), 
+                cards.Add(new Card
+                {
+                    CardNumber = cardNo,
+                    WinningNumbers = winningNumbers.Select(x => Convert.ToInt32(x)).ToList(),
                     MyNumbers = myNumbers.Select(x => Convert.ToInt32(x)).ToList(),
                     Instances = 1
                 });
@@ -45,7 +46,7 @@ namespace AdventOfCode2023
             }
 
             int total = 0;
-            
+
             foreach (var card in cards)
             {
                 var myWinningNumbers = card.MyNumbers.Intersect(card.WinningNumbers).Count();
@@ -54,14 +55,14 @@ namespace AdventOfCode2023
 
                 card.MyWinningNumbers = myWinningNumbers;
 
-                for(i = card.CardNumber; i <= card.CardNumber+myWinningNumbers-1 && i <= cards.Count(); i++)
+                for (i = card.CardNumber; i <= card.CardNumber + myWinningNumbers - 1 && i <= cards.Count(); i++)
                 {
                     cards[i].Instances += card.Instances;
                 }
 
-                if(myWinningNumbers > 0)
+                if (myWinningNumbers > 0)
                 {
-                    total += (int)Math.Pow(2,myWinningNumbers-1);
+                    total += (int)Math.Pow(2, myWinningNumbers - 1);
                 }
             }
 

@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using AdventOfCode2023.Algorithms.DijkstraCalculator;
-using AdventOfCode2023.Enums;
-using AdventOfCode2023.Helpers;
+using AdventOfCode.Algorithms.DijkstraCalculator;
+using AdventOfCode.Enums;
+using AdventOfCode.Helpers;
 
-namespace AdventOfCode2023
+namespace AdventOfCode._2023
 {
     internal class Day17 : DayBase
     {
@@ -20,9 +20,9 @@ namespace AdventOfCode2023
             List<Block> blocks = new List<Block>();
 
             int x = 0;
-            foreach(var line in lines)
+            foreach (var line in lines)
             {
-                for(int y = 0; y < line.Length; y++)
+                for (int y = 0; y < line.Length; y++)
                 {
                     blocks.Add(new Block { Position = new Tuple<int, int>(x, y), HeatLoss = Convert.ToInt32(line[y].ToString()) });
                 }
@@ -31,24 +31,24 @@ namespace AdventOfCode2023
             }
 
             Graph graph = new Graph();
-            
+
             // Add the nodes
-            foreach(var block in blocks)
+            foreach (var block in blocks)
             {
                 Node blockNode = new Node(block.Position);
                 graph.Add(blockNode);
             }
 
             Node firstNode = null, lastNode = null;
-            
+
             // Add the neighbour for each node
             foreach (var blockNode in graph.Nodes)
             {
-                if(firstNode == null)
+                if (firstNode == null)
                     firstNode = blockNode;
                 else
                     lastNode = blockNode;
-                
+
                 var neighbours = graph.Nodes.Where(b =>
                     b.Coords.Item1 >= blockNode.Coords.Item1 - 1
                     && b.Coords.Item1 <= blockNode.Coords.Item1 + 1
@@ -57,11 +57,11 @@ namespace AdventOfCode2023
                     && b != blockNode
                     && (b.Coords.Item1 == blockNode.Coords.Item1 || b.Coords.Item2 == blockNode.Coords.Item2)
                     )
-                    .Join(blocks, n => n.Coords, b => b.Position, (n,b) => new {n, b.HeatLoss});
+                    .Join(blocks, n => n.Coords, b => b.Position, (n, b) => new { n, b.HeatLoss });
 
-                foreach( var neighbor in neighbours)
+                foreach (var neighbor in neighbours)
                 {
-                    blockNode.AddNeighbour(neighbor.n, neighbor.HeatLoss, _gridHelper.CalculateDirection(blockNode,neighbor.n));
+                    blockNode.AddNeighbour(neighbor.n, neighbor.HeatLoss, _gridHelper.CalculateDirection(blockNode, neighbor.n));
                 }
             }
             //lastNode = graph.Nodes.FirstOrDefault(n => n.Coords.Equals(new Tuple<int, int>(0, 5)));
@@ -78,20 +78,20 @@ namespace AdventOfCode2023
                            join r in routeSteps
                            on b.Position equals r.Item1.Coords into rb
                            from ra in rb.DefaultIfEmpty()
-                           select new { Position = b.Position, Code = _gridHelper.DirectionDisplay(ra?.Item2) ?? "#" };
+                           select new { b.Position, Code = _gridHelper.DirectionDisplay(ra?.Item2) ?? "#" };
 
             for (x = 0; x < lines.Count; x++)
             {
-                Console.WriteLine(String.Join("", (routeMap.Where(b => b.Position.Item1 == x).Select(b => b.Code))));
+                Console.WriteLine(string.Join("", routeMap.Where(b => b.Position.Item1 == x).Select(b => b.Code)));
             }
             total = c.RouteDistance;
         }
 
-        
+
 
         class Block
         {
-            public Tuple<int,int> Position { get; set; }
+            public Tuple<int, int> Position { get; set; }
             public int HeatLoss { get; set; }
         }
     }

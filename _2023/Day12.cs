@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AdventOfCode2023
+namespace AdventOfCode._2023
 {
     internal class Day12 : DayBase
     {
@@ -15,10 +15,10 @@ namespace AdventOfCode2023
             List<Tuple<int, char[], int[]>> rows = new List<Tuple<int, char[], int[]>>();
 
             int i = 0;
-            
-            foreach(var line in lines)
+
+            foreach (var line in lines)
             {
-                var lineSplit = line.Split(' ',StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
+                var lineSplit = line.Split(' ', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
 
                 rows.Add(new Tuple<int, char[], int[]>(
                     i,
@@ -29,7 +29,7 @@ namespace AdventOfCode2023
                 i++;
             }
 
-            foreach(var row in rows)
+            foreach (var row in rows)
             {
                 int minRowLength = row.Item3.Sum() + row.Item3.Count() - 1;
 
@@ -38,21 +38,21 @@ namespace AdventOfCode2023
                 int lastNonOperationalPosition = Array.LastIndexOf(row.Item2, row.Item2.Reverse().First(x => x != '.'));
 
                 // Length of contiguous groups is the same as the length of the operational row array so only 1 arrangement possible
-                if (minRowLength == (lastNonOperationalPosition - firstNonOperationalPosition)+1)
+                if (minRowLength == lastNonOperationalPosition - firstNonOperationalPosition + 1)
                 {
                     total += 1;
                     continue;
                 }
 
-                List<Tuple<int,int>> operationalGroups = new List<Tuple<int, int>>();
+                List<Tuple<int, int>> operationalGroups = new List<Tuple<int, int>>();
                 int operationalGroupStart = 0;
                 int operationalGroupLength = 0;
 
-                for(i = firstNonOperationalPosition; i < lastNonOperationalPosition; i++)
+                for (i = firstNonOperationalPosition; i < lastNonOperationalPosition; i++)
                 {
                     if (row.Item2[i] == '.')
                     {
-                        if(operationalGroupLength == 0)
+                        if (operationalGroupLength == 0)
                         {
                             operationalGroupStart = i;
                         }
@@ -70,7 +70,7 @@ namespace AdventOfCode2023
 
                 int skip = firstNonOperationalPosition;
 
-                foreach(var groupLength in row.Item3)
+                foreach (var groupLength in row.Item3)
                 {
                     int nextOperationalPosition = Array.IndexOf(row.Item2, '.', skip);
 

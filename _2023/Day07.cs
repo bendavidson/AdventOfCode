@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AdventOfCode2023
+namespace AdventOfCode._2023
 {
     internal class Day07 : IPuzzle
     {
@@ -27,7 +27,7 @@ namespace AdventOfCode2023
 
             while (line != null)
             {
-                var lineParts = line.Split(' ',StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
+                var lineParts = line.Split(' ', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
 
                 Hand hand = new Hand
                 {
@@ -38,28 +38,28 @@ namespace AdventOfCode2023
                 };
 
                 hands.Add(hand);
-                
+
                 i++;
                 line = sr.ReadLine();
             }
 
             sr.Close();
 
-            Int64 total = 0;
+            long total = 0;
             i = 1;
 
-            foreach(var hand in hands
+            foreach (var hand in hands
                         .OrderBy(h => h.HandType)
-                        .ThenBy(h => (h.Card1 == Card.J && partNo == 2) ? Card.Joker : h.Card1)
-                        .ThenBy(h => (h.Card2 == Card.J && partNo == 2) ? Card.Joker : h.Card2)
-                        .ThenBy(h => (h.Card3 == Card.J && partNo == 2) ? Card.Joker : h.Card3)
-                        .ThenBy(h => (h.Card4 == Card.J && partNo == 2) ? Card.Joker : h.Card4)
-                        .ThenBy(h => (h.Card5 == Card.J && partNo == 2) ? Card.Joker : h.Card5))
+                        .ThenBy(h => h.Card1 == Card.J && partNo == 2 ? Card.Joker : h.Card1)
+                        .ThenBy(h => h.Card2 == Card.J && partNo == 2 ? Card.Joker : h.Card2)
+                        .ThenBy(h => h.Card3 == Card.J && partNo == 2 ? Card.Joker : h.Card3)
+                        .ThenBy(h => h.Card4 == Card.J && partNo == 2 ? Card.Joker : h.Card4)
+                        .ThenBy(h => h.Card5 == Card.J && partNo == 2 ? Card.Joker : h.Card5))
             {
                 hand.Rank = i;
-                total += (hand.Bid*i);
+                total += hand.Bid * i;
                 i++;
-                if(hand.CardString.Contains('J'))
+                if (hand.CardString.Contains('J'))
                     Console.WriteLine(hand.CardString + ": " + hand.HandType.ToString());
             }
 
@@ -68,14 +68,14 @@ namespace AdventOfCode2023
 
         private HandType CalculateHandType(string cardString)
         {
-            var distinctCards = cardString.GroupBy(x => x).Select(x => new {Card = x.Key, Occurances = x.Count() });
-            
+            var distinctCards = cardString.GroupBy(x => x).Select(x => new { Card = x.Key, Occurances = x.Count() });
+
             if (distinctCards.Any(x => x.Occurances == 5))
                 return HandType.FiveOfAKind;
 
             if (distinctCards.Any(x => x.Occurances == 4))
             {
-                if(distinctCards.Any(x => x.Card == 'J') && partNo == 2)
+                if (distinctCards.Any(x => x.Card == 'J') && partNo == 2)
                     return HandType.FiveOfAKind;
                 else
                     return HandType.FourOfAKind;
@@ -101,7 +101,7 @@ namespace AdventOfCode2023
             {
                 if (distinctCards.Any(x => x.Card == 'J') && partNo == 2)
                 {
-                    if(distinctCards.FirstOrDefault(x => x.Card == 'J').Occurances == 2)
+                    if (distinctCards.FirstOrDefault(x => x.Card == 'J').Occurances == 2)
                         return HandType.FourOfAKind;
                     else
                         return HandType.FullHouse;
@@ -128,7 +128,7 @@ namespace AdventOfCode2023
         {
             public int Id;
             public string CardString;
-            public Card Card1 { get { Enum.TryParse(CardString.Substring(0, 1), true, out Card card);  return card; } }
+            public Card Card1 { get { Enum.TryParse(CardString.Substring(0, 1), true, out Card card); return card; } }
             public Card Card2 { get { Enum.TryParse(CardString.Substring(1, 1), true, out Card card); return card; } }
             public Card Card3 { get { Enum.TryParse(CardString.Substring(2, 1), true, out Card card); return card; } }
             public Card Card4 { get { Enum.TryParse(CardString.Substring(3, 1), true, out Card card); return card; } }
@@ -141,7 +141,7 @@ namespace AdventOfCode2023
         private enum Card
         {
             Joker = 1,
-            [Display(Name ="2")]
+            [Display(Name = "2")]
             Two = 2,
             [Display(Name = "3")]
             Three = 3,
@@ -149,13 +149,13 @@ namespace AdventOfCode2023
             Four = 4,
             [Display(Name = "5")]
             Five = 5,
-            [Display(Name = "6")] 
+            [Display(Name = "6")]
             Six = 6,
-            [Display(Name = "7")] 
+            [Display(Name = "7")]
             Seven = 7,
-            [Display(Name = "8")] 
+            [Display(Name = "8")]
             Eight = 8,
-            [Display(Name = "9")] 
+            [Display(Name = "9")]
             Nine = 9,
             T = 10,
             J = 11,

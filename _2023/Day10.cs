@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AdventOfCode2023
+namespace AdventOfCode._2023
 {
     internal class Day10 : DayBase
     {
@@ -56,14 +56,14 @@ namespace AdventOfCode2023
             while (nextPipe != startingPipe)
             {
                 var currentPipe = nextPipe;
-                
+
                 nextPipe = connectedPipes.Where(p => p != previousPipe)
                     .FirstOrDefault(p => p.Position.Equals(currentPipe.Connections.Item1) || p.Position.Equals(currentPipe.Connections.Item2));
 
                 previousPipe = currentPipe;
 
                 pipesInLoop.Add(currentPipe);
-                steps ++;
+                steps++;
             }
 
             if (partNo == 1)
@@ -73,18 +73,18 @@ namespace AdventOfCode2023
             else
             {
                 bool inside = false;
-                
-                for(y = 0; y < 139;  y++)
+
+                for (y = 0; y < 139; y++)
                 {
-                    for(var x = 0; x < 139;  x++)
+                    for (var x = 0; x < 139; x++)
                     {
-                        if(x == 0 || y == 0 || x == 139 || y == 139)
+                        if (x == 0 || y == 0 || x == 139 || y == 139)
                             inside = false;
 
                         var pipe = pipeMap.FirstOrDefault(p => p.Position.Equals(new Tuple<int, int>(x, y)));
-                        if(pipesInLoop.Contains(pipe))
+                        if (pipesInLoop.Contains(pipe))
                         {
-                            if(pipe.PipeChar == '|' || pipe.PipeChar == 'J' || pipe.PipeChar == 'L')
+                            if (pipe.PipeChar == '|' || pipe.PipeChar == 'J' || pipe.PipeChar == 'L')
                                 inside = !inside;
                         }
                         else if (inside)
@@ -109,7 +109,7 @@ namespace AdventOfCode2023
                 return;
 
             Tuple<int, int> connection1 = null, connection2 = null;
-            
+
             switch (pipe.PipeChar)
             {
                 case '|':
@@ -147,7 +147,7 @@ namespace AdventOfCode2023
                 || connection2.Item1 < 0 || connection2.Item1 < 0
                 || connection2.Item1 > 139 || connection2.Item2 > 139)
                 return;
-            
+
             pipe.Connections = new Tuple<Tuple<int, int>, Tuple<int, int>>(connection1, connection2);
         }
 

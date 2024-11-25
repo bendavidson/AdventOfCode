@@ -1,13 +1,13 @@
-﻿using AdventOfCode2023.Algorithms;
-using AdventOfCode2023.Enums;
-using AdventOfCode2023.Helpers;
+﻿using AdventOfCode.Algorithms;
+using AdventOfCode.Enums;
+using AdventOfCode.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AdventOfCode2023
+namespace AdventOfCode._2023
 {
     internal class Day18 : DayBase
     {
@@ -18,8 +18,8 @@ namespace AdventOfCode2023
         protected override void Solve()
         {
             List<Tuple<Direction, long, string>> instructions = new List<Tuple<Direction, long, string>>();
-            
-            foreach(var line in lines)
+
+            foreach (var line in lines)
             {
                 var instruction = line.Split(' ', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
 
@@ -28,18 +28,18 @@ namespace AdventOfCode2023
 
             List<Tuple<long, long>> vectors = new List<Tuple<long, long>>();
 
-            var seed = new Tuple<long,long>(0, 0);
-            
-            Dictionary<int,Direction> directionFromHex = new Dictionary<int,Direction>();
+            var seed = new Tuple<long, long>(0, 0);
+
+            Dictionary<int, Direction> directionFromHex = new Dictionary<int, Direction>();
             directionFromHex.Add(0, Direction.Right);
             directionFromHex.Add(1, Direction.Down);
             directionFromHex.Add(2, Direction.Left);
             directionFromHex.Add(3, Direction.Up);
 
-            foreach(var instruction in instructions)
+            foreach (var instruction in instructions)
             {
                 vectors.Add(seed);
-                var numFromHex = long.Parse(instruction.Item3.Substring(2,5),System.Globalization.NumberStyles.HexNumber);
+                var numFromHex = long.Parse(instruction.Item3.Substring(2, 5), System.Globalization.NumberStyles.HexNumber);
                 var dirFromHex = directionFromHex[Convert.ToInt32(instruction.Item3.Substring(instruction.Item3.Length - 2, 1))];
                 seed = _gridHelper.Transpose(seed, partNo == 2 ? dirFromHex : instruction.Item1, partNo == 2 ? numFromHex : instruction.Item2);
             }
@@ -51,7 +51,7 @@ namespace AdventOfCode2023
 
             long perimeter = instructions.Sum(i => partNo == 2 ? long.Parse(i.Item3.Substring(2, 5), System.Globalization.NumberStyles.HexNumber) : i.Item2);
 
-            total = (long)(area + (perimeter/2)+1);
+            total = (long)(area + perimeter / 2 + 1);
         }
     }
 }

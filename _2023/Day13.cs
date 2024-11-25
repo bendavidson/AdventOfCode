@@ -5,7 +5,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AdventOfCode2023
+namespace AdventOfCode._2023
 {
     internal class Day13 : DayBase
     {
@@ -15,7 +15,7 @@ namespace AdventOfCode2023
         {
             List<char[]> pattern = new List<char[]>();
 
-            foreach(var line in lines)
+            foreach (var line in lines)
             {
                 if (line.Length > 0)
                 {
@@ -34,7 +34,7 @@ namespace AdventOfCode2023
         private int SolvePattern(List<char[]> pattern)
         {
             // Check for horizontal reflection first
-            int result = FindReflection(pattern)*100;
+            int result = FindReflection(pattern) * 100;
 
             // No horizontal reflection found - twist the pattern and try againif (result == 0)
             if (result == 0)
@@ -59,7 +59,7 @@ namespace AdventOfCode2023
                 var potentialReflections = pattern
                     .Zip(pattern.Skip(1), (x, y) => new { x, y })
                     .Select((p, i) => new { i, p.x, p.y })
-                    .Where(p => new string(p.x) == new String(p.y));
+                    .Where(p => new string(p.x) == new string(p.y));
 
                 foreach (var p in potentialReflections)
                 {
@@ -76,11 +76,11 @@ namespace AdventOfCode2023
                                        select (a, b) into allPairs
                                        where allPairs.a.index < allPairs.b.index
                                        select (allPairs.a, allPairs.b) into distinctPairs
-                                       where distinctPairs.a.row.Zip(distinctPairs.b.row, (y, z) => y != z).Count(f => f) == 1 
-                                                && (distinctPairs.b.index - distinctPairs.a.index)%2 != 0
+                                       where distinctPairs.a.row.Zip(distinctPairs.b.row, (y, z) => y != z).Count(f => f) == 1
+                                                && (distinctPairs.b.index - distinctPairs.a.index) % 2 != 0
                                        select new { indexA = distinctPairs.a.index, a = distinctPairs.a.row, indexB = distinctPairs.b.index, b = distinctPairs.b.row };
 
-                foreach(var p in potentialSmudges)
+                foreach (var p in potentialSmudges)
                 {
                     List<char[]> desmudgedPattern = new List<char[]>(pattern);
                     desmudgedPattern[p.indexA] = p.b;
@@ -90,7 +90,7 @@ namespace AdventOfCode2023
                     if (CheckReflection(potentialReflectionPoint, desmudgedPattern))
                     {
                         return potentialReflectionPoint + 1;
-                    }    
+                    }
                 }
             }
 
@@ -103,7 +103,7 @@ namespace AdventOfCode2023
 
             for (int i = p; i >= Math.Max(0, p - (patternHeight - (p + 1)) + 1); i--)
             {
-                if (new String(pattern[i]) != new String(pattern[p + (p - i) + 1]))
+                if (new string(pattern[i]) != new string(pattern[p + (p - i) + 1]))
                     return false;
             }
 

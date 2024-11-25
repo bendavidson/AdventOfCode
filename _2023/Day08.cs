@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 
-namespace AdventOfCode2023
+namespace AdventOfCode._2023
 {
     internal class Day08 : IPuzzle
     {
@@ -29,12 +29,12 @@ namespace AdventOfCode2023
 
             while (line != null)
             {
-                if(line.Length > 0)
+                if (line.Length > 0)
                 {
                     if (i == 0)
                     {
                         directions = line.ToCharArray();
-                    }                       
+                    }
                     else
                     {
                         var nodeParts = line.Split(new char[] { ' ', '=', ',', '(', ')' }, StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
@@ -48,7 +48,7 @@ namespace AdventOfCode2023
                         nodes.Add(node);
                     }
                 }
-                
+
                 i++;
                 line = sr.ReadLine();
             }
@@ -79,9 +79,9 @@ namespace AdventOfCode2023
             {
                 var nodesToCheck = nodes.Where(x => x.Source.EndsWith('A'));
 
-                List<Tuple<string,string, Int128>> map = new List<Tuple<string, string, Int128>>();
-                
-                foreach(var node in nodesToCheck)
+                List<Tuple<string, string, Int128>> map = new List<Tuple<string, string, Int128>>();
+
+                foreach (var node in nodesToCheck)
                 {
                     i = 0;
                     var nodeBeingChecked = node;
@@ -96,7 +96,7 @@ namespace AdventOfCode2023
                         i++;
                     }
 
-                    map.Add(new Tuple<string,string, Int128>(node.Source,nodeBeingChecked.Source, i));
+                    map.Add(new Tuple<string, string, Int128>(node.Source, nodeBeingChecked.Source, i));
                 }
 
                 nodesToCheck = nodes.Where(x => x.Source.EndsWith('Z'));
@@ -130,7 +130,7 @@ namespace AdventOfCode2023
             public string Source;
             public string DestinationL;
             public string DestinationR;
-            public string Destination(Char direction)
+            public string Destination(char direction)
             {
                 return direction == 'L' ? DestinationL : DestinationR;
             }
@@ -138,7 +138,7 @@ namespace AdventOfCode2023
 
         private Int128 GreatestCommonDenominator(Int128 x, Int128 y)
         {
-            if(y == 0)
+            if (y == 0)
             {
                 return x;
             }

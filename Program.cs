@@ -1,6 +1,6 @@
 ﻿using static System.Net.Mime.MediaTypeNames;
 
-namespace AdventOfCode2023
+namespace AdventOfCode
 {
     internal class Program
     {

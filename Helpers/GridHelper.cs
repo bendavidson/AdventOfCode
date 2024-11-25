@@ -1,12 +1,12 @@
-﻿using AdventOfCode2023.Algorithms.DijkstraCalculator;
-using AdventOfCode2023.Enums;
+﻿using AdventOfCode.Algorithms.DijkstraCalculator;
+using AdventOfCode.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AdventOfCode2023.Helpers
+namespace AdventOfCode.Helpers
 {
     internal class GridHelper
     {

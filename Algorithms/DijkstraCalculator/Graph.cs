@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AdventOfCode2023.Algorithms.DijkstraCalculator
+namespace AdventOfCode.Algorithms.DijkstraCalculator
 {
     internal class Graph
     {

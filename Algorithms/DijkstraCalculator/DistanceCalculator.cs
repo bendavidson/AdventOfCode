@@ -5,10 +5,10 @@ using System.Linq;
 using System.Net.NetworkInformation;
 using System.Text;
 using System.Threading.Tasks;
-using AdventOfCode2023.Enums;
-using AdventOfCode2023.Helpers;
+using AdventOfCode.Enums;
+using AdventOfCode.Helpers;
 
-namespace AdventOfCode2023.Algorithms.DijkstraCalculator
+namespace AdventOfCode.Algorithms.DijkstraCalculator
 {
     internal class DistanceCalculator
     {

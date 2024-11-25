@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
-namespace AdventOfCode2023
+namespace AdventOfCode._2023
 {
     internal class Day03 : IPuzzle
     {
@@ -16,7 +16,7 @@ namespace AdventOfCode2023
         public Day03()
         {
             Dictionary<int, char[]> lines = new Dictionary<int, char[]>();
-            
+
             StreamReader sr = new StreamReader(inputFile);
             string line = sr.ReadLine();
 
@@ -25,15 +25,15 @@ namespace AdventOfCode2023
             while (line != null)
             {
                 Console.WriteLine(line);
-                lines.Add(i,line.ToCharArray());
+                lines.Add(i, line.ToCharArray());
 
                 line = sr.ReadLine();
 
                 i++;
             }
-            
-            
-            foreach(var lineArray in lines)
+
+
+            foreach (var lineArray in lines)
             {
                 LineContent lineContent = null;
 
@@ -42,7 +42,7 @@ namespace AdventOfCode2023
                     // Ignore periods
                     if (lineArray.Value[i] == '.')
                     {
-                        if(lineContent != null)
+                        if (lineContent != null)
                         {
                             lineContents.Add(lineContent);
                             lineContent = null;
@@ -51,17 +51,17 @@ namespace AdventOfCode2023
                     }
 
                     // If a number
-                    if (Char.IsNumber(lineArray.Value[i]))
+                    if (char.IsNumber(lineArray.Value[i]))
                     {
                         // No current line content - start a new one
-                        if(lineContent == null)
+                        if (lineContent == null)
                         {
                             lineContent = new LineContent { LineNo = lineArray.Key, Content = lineArray.Value[i].ToString(), StartingIndex = i };
                             continue;
                         }
 
                         // Current line content is a symbol - save and start a new one
-                        if(!lineContent.IsNumber)
+                        if (!lineContent.IsNumber)
                         {
                             lineContents.Add(lineContent);
                             lineContent = new LineContent { LineNo = lineArray.Key, Content = lineArray.Value[i].ToString(), StartingIndex = i };
@@ -74,8 +74,8 @@ namespace AdventOfCode2023
                     }
 
                     // If we get her, the content must be a symbol - if we already have a content then it must be a number - save and create a new one
-                    if(lineContent != null)
-                    { 
+                    if (lineContent != null)
+                    {
                         lineContents.Add(lineContent);
                         lineContent = new LineContent { LineNo = lineArray.Key, Content = lineArray.Value[i].ToString(), StartingIndex = i };
                         continue;
@@ -87,21 +87,21 @@ namespace AdventOfCode2023
                     lineContent = null;
                 }
 
-                if(lineContent !=null)
+                if (lineContent != null)
                 {
                     lineContents.Add(lineContent);
                 }
             }
 
-            var numbers  = lineContents.Where(x => x.IsNumber);
+            var numbers = lineContents.Where(x => x.IsNumber);
 
             int total = 0;
-            
-            foreach(var number in numbers)
+
+            foreach (var number in numbers)
             {
-                if (lineContents.Any(x => !x.IsNumber 
-                                    && x.LineNo >= number.LineNo-1
-                                    && x.LineNo <= number.LineNo+1
+                if (lineContents.Any(x => !x.IsNumber
+                                    && x.LineNo >= number.LineNo - 1
+                                    && x.LineNo <= number.LineNo + 1
                                     && x.StartingIndex >= number.searchStartIndex
                                     && x.StartingIndex <= number.searchEndIndex
                                     ))
@@ -118,16 +118,16 @@ namespace AdventOfCode2023
             foreach (var gear in gears)
             {
                 var parts = lineContents.Where(x => x.IsNumber
-                                            && x.LineNo >= gear.LineNo-1
-                                            && x.LineNo <= gear.LineNo+1
+                                            && x.LineNo >= gear.LineNo - 1
+                                            && x.LineNo <= gear.LineNo + 1
                                             && x.searchStartIndex <= gear.StartingIndex
                                             && x.searchEndIndex >= gear.StartingIndex
                 );
 
-                if(parts.Count() == 2)
+                if (parts.Count() == 2)
                 {
                     total += parts.Select(x => Convert.ToInt32(x.Content))
-                                    .Aggregate((x, y) => x*y);
+                                    .Aggregate((x, y) => x * y);
                 }
             }
 
@@ -140,7 +140,7 @@ namespace AdventOfCode2023
             public string Content;
             public int StartingIndex;
             public bool IsNumber { get { return int.TryParse(Content, out _); } }
-            public int searchStartIndex { get { return Math.Max(0, StartingIndex-1); } }
+            public int searchStartIndex { get { return Math.Max(0, StartingIndex - 1); } }
             public int searchEndIndex { get { return Math.Min(139, StartingIndex + Content.Length); } }
         }
     }

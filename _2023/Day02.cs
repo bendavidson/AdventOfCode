@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AdventOfCode2023
+namespace AdventOfCode._2023
 {
     internal class Day02 : IPuzzle
     {
@@ -14,43 +14,43 @@ namespace AdventOfCode2023
         int maxGreen = 13;
         int maxBlue = 14;
 
-        public Day02() 
+        public Day02()
         {
             StreamReader sr = new StreamReader(inputFile);
             string line = sr.ReadLine();
 
             Dictionary<int, List<Tuple<string, int>>> lines = new Dictionary<int, List<Tuple<string, int>>>();
-            Dictionary<int,int> gameMinCubes = new Dictionary<int,int>();
+            Dictionary<int, int> gameMinCubes = new Dictionary<int, int>();
 
             while (line != null)
             {
                 Console.WriteLine(line);
-                
+
                 var cubesShown = new List<Tuple<string, int>>();
 
                 var topSplit = line.Split(':');
                 int gameNo = Convert.ToInt32(topSplit[0].Replace("Game ", "").Trim());
 
-                var cubes = topSplit[1].Split(new char[] {',',';'});
+                var cubes = topSplit[1].Split(new char[] { ',', ';' });
 
                 int minRed = 0;
                 int minGreen = 0;
                 int minBlue = 0;
 
                 bool invalidGame = false;
-                
-                for(int i = 0; i < cubes.Length; i++)
+
+                for (int i = 0; i < cubes.Length; i++)
                 {
                     var cubeColours = cubes[i].Split(' ', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries);
                     string colour = cubeColours[1];
                     int noOfCubes = Convert.ToInt32(cubeColours[0]);
-                    cubesShown.Add(new Tuple<string, int>( cubeColours[1], Convert.ToInt32(cubeColours[0]) ));
+                    cubesShown.Add(new Tuple<string, int>(cubeColours[1], Convert.ToInt32(cubeColours[0])));
 
                     int maxCubes = 0;
                     switch (colour.ToLower())
                     {
                         case "red":
-                            maxCubes = maxRed; 
+                            maxCubes = maxRed;
                             minRed = noOfCubes > minRed ? noOfCubes : minRed;
                             break;
                         case "green":
@@ -61,13 +61,14 @@ namespace AdventOfCode2023
                             maxCubes = maxBlue;
                             minBlue = noOfCubes > minBlue ? noOfCubes : minBlue;
                             break;
-                        default: maxCubes = 0;
+                        default:
+                            maxCubes = 0;
                             break;
                     }
 
-                    if(noOfCubes > maxCubes)
+                    if (noOfCubes > maxCubes)
                     {
-                        invalidGame = true;           
+                        invalidGame = true;
                     }
                 }
 
@@ -76,7 +77,7 @@ namespace AdventOfCode2023
                     lines.Add(gameNo, cubesShown);
                 }
 
-                gameMinCubes.Add(gameNo, (minRed * minGreen * minBlue));
+                gameMinCubes.Add(gameNo, minRed * minGreen * minBlue);
 
                 line = sr.ReadLine();
             }
@@ -86,12 +87,12 @@ namespace AdventOfCode2023
             int total = 0;
             int totalPart2 = 0;
 
-            foreach( var possibleGame in lines)
+            foreach (var possibleGame in lines)
             {
                 total += possibleGame.Key;
             }
 
-            foreach(var game in gameMinCubes)
+            foreach (var game in gameMinCubes)
             {
                 totalPart2 += game.Value;
             }

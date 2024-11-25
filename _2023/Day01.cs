@@ -6,7 +6,7 @@ using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AdventOfCode2023
+namespace AdventOfCode._2023
 {
     internal class Day01 : IPuzzle
     {
@@ -46,18 +46,18 @@ namespace AdventOfCode2023
             sr.Close();
 
             int total = 0;
-            
-            Dictionary<string,int> result = new Dictionary<string, int>();
 
-            foreach(var lineArray in lines)
+            Dictionary<string, int> result = new Dictionary<string, int>();
+
+            foreach (var lineArray in lines)
             {
                 string numberString = "";
                 int i = 0;
 
                 int? firstNumber = null;
                 while (firstNumber == null)
-                { 
-                    if(Char.IsNumber(lineArray[i]))
+                {
+                    if (char.IsNumber(lineArray[i]))
                     {
                         firstNumber = Convert.ToInt32(lineArray[i].ToString());
                     }
@@ -65,7 +65,7 @@ namespace AdventOfCode2023
                     {
                         numberString = NumberString(numberString, lineArray[i], false);
                         if (numberString != "")
-                        { 
+                        {
                             if (numberStrings.ContainsKey(numberString))
                             {
                                 firstNumber = numberStrings[numberString];
@@ -81,12 +81,12 @@ namespace AdventOfCode2023
                 }
 
                 numberString = "";
-                i = lineArray.Length -1;
+                i = lineArray.Length - 1;
 
                 int? lastNumber = null;
                 while (lastNumber == null)
                 {
-                    if (Char.IsNumber(lineArray[i]))
+                    if (char.IsNumber(lineArray[i]))
                     {
                         lastNumber = Convert.ToInt32(lineArray[i].ToString());
                     }
@@ -111,13 +111,13 @@ namespace AdventOfCode2023
 
                 Console.WriteLine(new string(lineArray) + " : " + ((int)(firstNumber * 10) + (int)(lastNumber ?? firstNumber)).ToString());
 
-                result.Add(new string(lineArray), ((int)(firstNumber * 10) + (int)(lastNumber ?? firstNumber)));
+                result.Add(new string(lineArray), (int)(firstNumber * 10) + (int)(lastNumber ?? firstNumber));
 
                 total = total + (int)(firstNumber * 10) + (int)(lastNumber ?? firstNumber);
             }
 
             string csv = string.Join(Environment.NewLine, result.Select(x => $"{x.Key},{x.Value.ToString()}"));
-            File.WriteAllText(outputFile,csv);
+            File.WriteAllText(outputFile, csv);
 
             Console.WriteLine("Result is: " + total.ToString());
         }
@@ -126,14 +126,14 @@ namespace AdventOfCode2023
         {
             if ((isReverse ? numberStringsReverse : numberStrings)
                 .Where(y => y.Key.Length > currentNumberString.Length)
-                .Any(x => x.Key.Substring(0, (currentNumberString.Length + 1)) == (currentNumberString + currentChar.ToString()))
+                .Any(x => x.Key.Substring(0, currentNumberString.Length + 1) == currentNumberString + currentChar.ToString())
                 )
             {
                 return currentNumberString + currentChar.ToString();
             }
-            else if(currentNumberString.Length > 1)
+            else if (currentNumberString.Length > 1)
             {
-                return NumberString(currentNumberString.Substring(1),currentChar, isReverse);
+                return NumberString(currentNumberString.Substring(1), currentChar, isReverse);
             }
             else
             {
