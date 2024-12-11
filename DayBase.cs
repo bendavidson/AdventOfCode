@@ -49,6 +49,7 @@ namespace AdventOfCode
         private void DisplayResult()
         {
             Console.WriteLine("Result is: " + total.ToString());
+            Console.ReadLine();
         }
     }
 }
