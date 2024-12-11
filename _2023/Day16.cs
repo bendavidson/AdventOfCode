@@ -9,7 +9,7 @@ namespace AdventOfCode._2023
     internal class Day16 : DayBase
     {
         private Tuple<int, int> _lastTile;
-        public Day16() : base("Day16") { }
+        public Day16() : base("2023", "Day16") { }
 
         protected override void Solve()
         {

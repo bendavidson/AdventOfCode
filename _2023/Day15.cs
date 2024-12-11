@@ -9,7 +9,7 @@ namespace AdventOfCode._2023
 {
     internal class Day15 : DayBase
     {
-        public Day15() : base("Day15") { }
+        public Day15() : base("2023", "Day15") { }
 
         protected override void Solve()
         {

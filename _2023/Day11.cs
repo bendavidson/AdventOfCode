@@ -11,7 +11,7 @@ namespace AdventOfCode._2023
         List<int> emptyColumns = new List<int>();
         List<int> emptyRows = new List<int>();
 
-        public Day11() : base("Day11") { }
+        public Day11() : base("2023", "Day11") { }
 
         protected override void Solve()
         {

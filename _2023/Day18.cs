@@ -13,7 +13,7 @@ namespace AdventOfCode._2023
     {
         private GridHelper _gridHelper = new GridHelper();
 
-        public Day18() : base("Day18") { }
+        public Day18() : base("2023", "Day18") { }
 
         protected override void Solve()
         {

@@ -12,7 +12,7 @@ namespace AdventOfCode._2023
     {
         private Hashtable _tiltedColumns = new Hashtable();
 
-        public Day14() : base("Day14") { }
+        public Day14() : base("2023", "Day14") { }
 
         protected override void Solve()
         {

@@ -14,10 +14,10 @@ namespace AdventOfCode
         protected List<string> lines;
         protected Int64 total = 0;
 
-        public DayBase(string day)
+        public DayBase(string year, string day)
         {
-            inputFile = "../../../Inputs/" + day + ".txt";
-            outputFile = "../../../Outputs/" + day + ".csv";
+            inputFile = "../../../Inputs/" + year + "/" + day + ".txt";
+            outputFile = "../../../Outputs/" + year + "/" + day + ".csv";
 
             StreamReader sr = new StreamReader(inputFile);
             string line = sr.ReadLine();
