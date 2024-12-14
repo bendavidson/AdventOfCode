@@ -13,6 +13,10 @@ namespace AdventOfCode.Enums
         Right,
         Up,
         Down,
+        UpRight,
+        UpLeft,
+        DownRight,
+        DownLeft,
         Default
     }
 }

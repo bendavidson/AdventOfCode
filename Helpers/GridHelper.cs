@@ -28,6 +28,22 @@ namespace AdventOfCode.Helpers
                     return Direction.Up;
             }
 
+            if(source.Coords.Item1 < destination.Coords.Item1)
+            {
+                if (source.Coords.Item2 + 1 == destination.Coords.Item2)
+                    return Direction.DownRight;
+                else
+                    return Direction.DownLeft;
+            }
+
+            if(source.Coords.Item1 > destination.Coords.Item1)
+            {
+                if (source.Coords.Item2 + 1 == destination.Coords.Item2)
+                    return Direction.UpRight;
+                else
+                    return Direction.UpLeft;
+            }
+
             return Direction.Default;
         }
 
@@ -39,10 +55,26 @@ namespace AdventOfCode.Helpers
                 case Direction.Right: return Direction.Left;
                 case Direction.Up: return Direction.Down;
                 case Direction.Down: return Direction.Up;
+                case Direction.UpLeft: return Direction.DownRight;
+                case Direction.UpRight: return Direction.DownLeft;
+                case Direction.DownRight: return Direction.UpLeft;
+                case Direction.DownLeft: return Direction.UpRight;
                 default: return Direction.Default;
             }
         }
 
+        public List<Node> FindNeighbours(Node node, List<Node> grid, bool allowDiagonals)
+        {
+            return grid.Where(b =>
+                    b.Coords.Item1 >= node.Coords.Item1 - 1
+                    && b.Coords.Item1 <= node.Coords.Item1 + 1
+                    && b.Coords.Item2 >= node.Coords.Item2 - 1
+                    && b.Coords.Item2 <= node.Coords.Item2 + 1
+                    && b != node
+                    && (b.Coords.Item1 == node.Coords.Item1 || b.Coords.Item2 == node.Coords.Item2 || allowDiagonals)
+                    ).ToList();
+        }
+        
         public string? DirectionDisplay(Direction? direction)
         {
             if (!direction.HasValue)

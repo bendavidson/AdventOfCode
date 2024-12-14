@@ -32,6 +32,12 @@ namespace AdventOfCode.Algorithms.DijkstraCalculator
             _coords = nodeCoords;
         }
 
+        public Node(string nodeName, Tuple<int, int> nodeCoords) : this()
+        {
+            _name = nodeName;
+            _coords = nodeCoords;
+        }
+
         public void AddNeighbour(Node n, int cost)
         {
             _neighbours.Add(n, new NeighbourAttributes { Cost = cost });
