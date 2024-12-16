@@ -63,6 +63,23 @@ namespace AdventOfCode.Helpers
             }
         }
 
+        public Direction TurnRight(Direction direction)
+        {
+            switch(direction)
+            {
+                case Direction.Left: return Direction.Up;
+                case Direction.Right: return Direction.Down;
+                case Direction.Up: return Direction.Right;
+                case Direction.Down: return Direction.Left;
+                default: return Direction.Default;
+            }
+        }
+
+        public Node? GetNeighbour(Node node, Direction direction, List<Node> nodes)
+        {
+            return nodes.FirstOrDefault(n => n.Coords.Equals(Transpose(node.Coords, direction, 1)));
+        }
+
         public List<Node> FindNeighbours(Node node, List<Node> grid, bool allowDiagonals)
         {
             return grid.Where(b =>
@@ -103,6 +120,13 @@ namespace AdventOfCode.Helpers
             }
 
             return default;
+        }
+
+        public Tuple<int,int> Transpose(Tuple<int,int> source, Direction direction, long moves)
+        {
+            var coords = Transpose(new Tuple<long,long>(source.Item1,source.Item2), direction, moves);
+
+            return new Tuple<int, int>((int)coords.Item1, (int)coords.Item2);
         }
 
         public Tuple<long, long> Transpose (Tuple<long, long> source, Direction direction, long moves)
