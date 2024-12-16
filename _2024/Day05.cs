@@ -51,7 +51,9 @@ namespace AdventOfCode._2024
             {
                 foreach(var update in updates.Except(correctlyOrderedUpdates))
                 {
+                    CorrectUpdateOrder(update, rules);
 
+                    total = total + update[(int)Math.Floor(update.Length / 2.0)];
                 }
             }
 
@@ -69,6 +71,35 @@ namespace AdventOfCode._2024
             }
 
             return true;
+        }
+
+        private void CorrectUpdateOrder(int[] update, List<Tuple<int,int>> rules)
+        {
+            for (int i = 0; i < update.Length; i++)
+            {
+                foreach(var rule in rules.Where(r => r.Item1 == update[i] && update.Any(u => u == r.Item2)))
+                {
+                    var indexToSwap = Array.IndexOf(update, rule.Item2);
+
+                    if (indexToSwap < i)
+                    {
+                        SwapPages(ref update[i], ref update[indexToSwap]);
+
+                        if (UpdateCorrectlyOrdered(update, rules))
+                        {
+                            return;
+                        }
+                    }
+                }
+            }
+
+            if(!UpdateCorrectlyOrdered(update, rules))
+                CorrectUpdateOrder(update, rules);
+        }
+
+        private void SwapPages(ref int x, ref int y)
+        {
+            (x, y) = (y, x);
         }
     }
 }
