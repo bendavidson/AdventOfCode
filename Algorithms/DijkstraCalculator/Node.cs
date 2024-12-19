@@ -13,7 +13,7 @@ namespace AdventOfCode.Algorithms.DijkstraCalculator
         private Tuple<int, int> _coords;
         private Dictionary<Node, NeighbourAttributes> _neighbours;
 
-        public string Name { get { return _name; } }
+        public string Name { get { return _name; } set { _name = value; } }
         public Tuple<int, int> Coords { get { return _coords; } }
         public Dictionary<Node, NeighbourAttributes> Neighbours { get { return _neighbours; } }
 

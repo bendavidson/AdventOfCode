@@ -57,8 +57,72 @@ namespace AdventOfCode._2024
                 nextNode = _gridHelper.GetNeighbour(currentNode, currentDirection, nodes);
             }
 
-            total = visitedNodes.Count;
+            if (partNo == 1)
+            {
+                total = visitedNodes.Count();
+            }
+            else
+            {
+                currentNode = visitedNodes.FirstOrDefault();
+                var blockingNodes = new HashSet<Node>();                
+                foreach(var node in visitedNodes.Skip(1))
+                {
+                    currentDirection = Direction.Up;
 
+                    if (!blockingNodes.Contains(node))
+                    {
+                        node.Name = "#";
+
+                        if (CheckForLoop(currentNode, node, currentDirection, nodes))
+                        {
+                            blockingNodes.Add(node);
+                            Console.WriteLine(node.Coords.ToString());
+                        }
+
+                        node.Name = ".";
+                    }
+
+                    //currentNode = node;
+                }
+
+                total = blockingNodes.Count();
+            }
+
+        }
+
+        private bool CheckForLoop(Node startNode, Node testNode, Direction startDirection, List<Node> nodes)
+        {
+            Node currentNode = startNode;
+            Node nextNode = _gridHelper.GetNeighbour(currentNode, startDirection, nodes);
+            Direction currentDirection = startDirection;
+            HashSet<(Node,Direction)> visitedNodes = new HashSet<(Node,Direction)> ();
+            int i = 0;
+
+            visitedNodes.Add((currentNode, currentDirection));
+
+            while(nextNode != null)
+            {
+                if (nextNode.Name == "#")
+                {
+                    currentDirection = _gridHelper.TurnRight(currentDirection);
+                }
+                else
+                {
+                    currentNode = nextNode;
+                    visitedNodes.Add((currentNode, currentDirection));
+                }
+
+                nextNode = _gridHelper.GetNeighbour(currentNode, currentDirection, nodes);
+
+                if(visitedNodes.Contains((nextNode, currentDirection)))
+                {
+                    return true;
+                }
+
+                i++;
+            }
+
+            return false;
         }
     }
 }
