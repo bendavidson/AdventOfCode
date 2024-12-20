@@ -24,22 +24,39 @@ namespace AdventOfCode._2024
 
             foreach(var equation in equations)
             {
-                if (SolveEquation(equation.Item1, equation.Item2))
+                if (SolveEquation(equation.Item1, equation.Item2, partNo != 1))
                     total = total + equation.Item1;
             }
         }
 
-        private bool SolveEquation(long answer, int[] numbers)
+        private bool SolveEquation(long answer, int[] numbers, bool allowConcat)
         {
-            if (numbers.Length > 2)
+            if(numbers.Length == 1) return answer == numbers[0];
+
+            if(numbers.Length == 2)
             {
-                return (SolveEquation(answer - numbers[numbers.Length - 1], numbers.SkipLast(1).ToArray()) && (answer - numbers[numbers.Length - 1] > 0))
-                    || (SolveEquation(answer / numbers[numbers.Length - 1], numbers.SkipLast(1).ToArray()) && (answer % numbers[numbers.Length - 1] == 0));
+                return (answer == numbers[0] + numbers[1])
+                    || (answer == numbers[0] * numbers[1])
+                    || (allowConcat && answer == ConcatenateNumbers(numbers[0], numbers[1]));
             }
-            else
-            {
-                return (answer == numbers[0] +  numbers[1]) || (answer == numbers[0] * numbers[1]);
-            }
+            
+            return (SolveEquation(answer - numbers[numbers.Length - 1], numbers.SkipLast(1).ToArray(), allowConcat) && (answer - numbers[numbers.Length - 1] > 0))
+                || (SolveEquation(answer / numbers[numbers.Length - 1], numbers.SkipLast(1).ToArray(), allowConcat) && (answer % numbers[numbers.Length - 1] == 0))
+                || (allowConcat && SolveEquation(SplitNumber(answer, numbers[numbers.Length - 1]), numbers.SkipLast(1).ToArray(), allowConcat) && ((answer - numbers[numbers.Length - 1]) % 10 == 0));
+        }
+
+        private int ConcatenateNumbers(int a, int b)
+        {
+            var digits = Math.Floor(Math.Log10(b) + 1);
+            
+            return (int)((a * Math.Pow(10, digits))+b);
+        }
+        
+        private long SplitNumber(long a, int b)
+        {
+            var digits = Math.Floor(Math.Log10(b) + 1);
+
+            return (long)((a - b) / Math.Pow(10, digits));
         }
     }
 }
