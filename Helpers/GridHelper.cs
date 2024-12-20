@@ -148,5 +148,35 @@ namespace AdventOfCode.Helpers
 
         }
 
+        public List<Node> GetGridFromLines(List<string> lines)
+        {
+            int x = 0;
+            int y = 0;
+
+            var nodes = new List<Node>();
+
+            foreach (var line in lines)
+            {
+                var lineArray = line.ToArray();
+
+                for (y = 0; y < lineArray.Length; y++)
+                {
+                    nodes.Add(new Node(lineArray[y].ToString(), new Tuple<int, int>(x, y)));
+                }
+                x++;
+            }
+
+            return nodes;
+        }
+
+        public Tuple<int,int> MaxXY(List<Node> nodes)
+        {
+            return nodes.OrderByDescending(n => n.Coords.Item1).ThenByDescending(n => n.Coords.Item2).FirstOrDefault().Coords;
+        }
+
+        public bool IsInGrid((int,int) coords, Tuple<int,int> maxXY)
+        {
+            return coords.Item1 >= 0 && coords.Item2 >= 0 && coords.Item1 <= maxXY.Item1 && coords.Item2 <= maxXY.Item2;
+        }
     }
 }
