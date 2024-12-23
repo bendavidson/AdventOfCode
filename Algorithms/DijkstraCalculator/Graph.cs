@@ -10,7 +10,7 @@ namespace AdventOfCode.Algorithms.DijkstraCalculator
     {
         private List<Node> _nodes;
         public int NodeCount { get { return _nodes.Count; } }
-        public List<Node> Nodes { get { return _nodes; } }
+        public List<Node> Nodes { get { return _nodes; } set { _nodes = value; } }
 
         public Graph()
         {

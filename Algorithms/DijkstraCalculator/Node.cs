@@ -12,10 +12,12 @@ namespace AdventOfCode.Algorithms.DijkstraCalculator
         private string _name;
         private Tuple<int, int> _coords;
         private Dictionary<Node, NeighbourAttributes> _neighbours;
+        private int _value;
 
         public string Name { get { return _name; } set { _name = value; } }
+        public int Value { get { return _value; } set { _value = value; } }
         public Tuple<int, int> Coords { get { return _coords; } }
-        public Dictionary<Node, NeighbourAttributes> Neighbours { get { return _neighbours; } }
+        public Dictionary<Node, NeighbourAttributes> Neighbours { get { return _neighbours; } set { _neighbours = value; } }
 
         private Node()
         {
@@ -35,6 +37,12 @@ namespace AdventOfCode.Algorithms.DijkstraCalculator
         public Node(string nodeName, Tuple<int, int> nodeCoords) : this()
         {
             _name = nodeName;
+            _coords = nodeCoords;
+        }
+
+        public Node(int value, Tuple<int,int> nodeCoords) : this()
+        {
+            _value = value;
             _coords = nodeCoords;
         }
 

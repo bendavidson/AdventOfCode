@@ -161,7 +161,14 @@ namespace AdventOfCode.Helpers
 
                 for (y = 0; y < lineArray.Length; y++)
                 {
-                    nodes.Add(new Node(lineArray[y].ToString(), new Tuple<int, int>(x, y)));
+                    if(Char.IsNumber(lineArray[y]))
+                    {
+                        nodes.Add(new Node(Convert.ToInt32(Char.GetNumericValue(lineArray[y])), new Tuple<int, int>(x, y)));
+                    }
+                    else
+                    {
+                        nodes.Add(new Node(lineArray[y].ToString(), new Tuple<int, int>(x, y)));
+                    }
                 }
                 x++;
             }
